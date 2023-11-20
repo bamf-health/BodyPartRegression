@@ -1,7 +1,5 @@
+import os
 import numpy as np
-import cv2, os, json
-
-cv2.setNumThreads(1)
 
 abspath = os.path.abspath(__file__)
 MAIN_PATH = os.path.dirname(os.path.dirname(os.path.dirname(abspath)))
@@ -111,7 +109,7 @@ TRANSFORM_STANDARD_PARAMS = {
         "scale_limit": 0.2,
         "rotate_limit": 10,
         "p": 0.5,
-        "border_mode": cv2.BORDER_REFLECT_101,
+        "border_mode": 4,  # cv2.BORDER_REFLECT_101,
     },
     "GaussianBlur": {
         "blur_limit": (3, 7),

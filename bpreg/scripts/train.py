@@ -5,7 +5,7 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
    http://www.apache.org/licenses/LICENSE-2.0
-   
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import random, pickle, datetime, os, sys, cv2, json
+import random, pickle, datetime, os, sys, json
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -37,7 +37,6 @@ from bpreg.network_architecture.ssbr_model import SSBR
 from bpreg.utils.training_utils import *
 from bpreg.settings import ModelSettings
 
-cv2.setNumThreads(1)
 np.seterr(divide="ignore", invalid="ignore")
 
 
@@ -112,7 +111,6 @@ def train_json_list(config_filepaths: list):
 
 
 if __name__ == "__main__":
-
     # get arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--list", nargs="+", default=[])

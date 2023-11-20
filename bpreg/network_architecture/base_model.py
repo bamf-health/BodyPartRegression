@@ -5,7 +5,7 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
    http://www.apache.org/licenses/LICENSE-2.0
-   
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,6 @@ import numpy as np
 import datetime
 import random, sys
 import torch
-import cv2
 import albumentations as A
 from scipy.stats import pearsonr
 import pytorch_lightning as pl
@@ -25,8 +24,6 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import torchvision.models as models
-
-cv2.setNumThreads(1)
 
 sys.path.append("../../")
 from bpreg.evaluation.landmark_mse import LMSE
@@ -46,7 +43,6 @@ class BodyPartRegressionBase(pl.LightningModule):
         alpha_h: float = 0.5,
         weight_decay: float = 0,
     ):
-
         super().__init__()
         self.lr = lr
         self.alpha_h = alpha_h
@@ -135,7 +131,7 @@ class BodyPartRegressionBase(pl.LightningModule):
         ldist_reg = 0
         loss_order = self.loss_order(scores_pred, z)
         if self.lambda_ > 0:
-            l2_norm = self.lambda_ * torch.mean(scores_pred ** 2)
+            l2_norm = self.lambda_ * torch.mean(scores_pred**2)
         if self.alpha > 0:
             ldist_reg = self.alpha * self.loss_dist(scores_pred, z)
         loss = loss_order + l2_norm + ldist_reg

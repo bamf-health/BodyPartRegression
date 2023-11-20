@@ -5,7 +5,7 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
    http://www.apache.org/licenses/LICENSE-2.0
-   
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,11 +16,9 @@ import os
 import numpy as np
 from numpy.lib.arraysetops import isin
 import pandas as pd
-import random, math, cv2
+import random
 import albumentations as A
 from torch.utils.data import Dataset
-
-cv2.setNumThreads(1)
 
 
 class BaseDataset(Dataset):
@@ -53,7 +51,6 @@ class BaseDataset(Dataset):
         albumentation_transform=False,
         random_seed: int = 0,
     ):
-
         self.data_path = data_path
         self.filenames = filenames
         self.filepaths = [os.path.join(data_path, f) for f in filenames]

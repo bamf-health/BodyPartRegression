@@ -4,7 +4,7 @@
 # You may obtain a copy of the License at
 
 #   http://www.apache.org/licenses/LICENSE-2.0
-   
+
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,9 +12,9 @@
 # limitations under the License.
 
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8-slim-buster
-# FROM nvcr.io/nvidia/pytorch:20.09-py3 
-# FROM nvcr.io/nvidia/pytorch:21.01-py3
+# FROM python:3.8-slim-buster
+# FROM nvcr.io/nvidia/pytorch:20.09-py3
+FROM nvcr.io/nvidia/pytorch:21.02-py3
 # This image makes trubles - pandas and skipy cant be found
 # FROM python:3.8-slim-buster
 
@@ -24,35 +24,34 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
 RUN apt-get update && apt-get install -y \
     git \
     htop \
     zip \
     unzip \
-    curl \
- && rm -rf /var/lib/apt/lists/*
+    wget \
+    libgl1-mesa-glx \
+    && rm -rf /var/lib/apt/lists/*
 
 # Clone directory from git
-RUN git clone  --single-branch --branch master https://github.com/MIC-DKFZ/BodyPartRegression.git && cd BodyPartRegression && git checkout v1.1 
+RUN git clone  --single-branch --branch master https://github.com/MIC-DKFZ/BodyPartRegression.git && cd BodyPartRegression && git checkout v1.1
 
-# Download public model from zenodo 
-RUN touch BodyPartRegression/src/models/public_bpr_model.zip
-RUN curl https://zenodo.org/record/5113483/files/public_bpr_model.zip?download=1 -o BodyPartRegression/src/models/public_bpr_model.zip 
 
-# Unzip model 
-RUN cd BodyPartRegression/src/models && unzip public_bpr_model.zip 
-
-# prepare workdir 
+# prepare workdir
+COPY . /app
 WORKDIR /app
-RUN mv /BodyPartRegression/* /app/
-RUN cd /app && ls 
 
-RUN ls 
-RUN pwd 
+# Download public model from zenodo
+RUN mkdir -p /app/src/models
+RUN wget https://zenodo.org/record/5113483/files/public_bpr_model.zip && unzip public_bpr_model.zip -d /app/src/models/
 
 # Install pip requirements
 RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+# RUN pip3 install -r requirements.txt
+# RUN pip install opencv-python-headless
+RUN pip3 install -U albumentations==0.5.2 --no-binary qudida,albumentations
 RUN pip3 install -e .
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder

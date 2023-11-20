@@ -5,7 +5,7 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
    http://www.apache.org/licenses/LICENSE-2.0
-   
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +15,6 @@ limitations under the License.
 
 import numpy as np
 import random
-import cv2
 
 
 class rescale_intensity(object):
@@ -117,8 +116,7 @@ class AddFrame:
         radius = center
         for idx in range(irange):
             for idy in range(irange):
-
-                if (idx - center) ** 2 + (idy - center) ** 2 > radius ** 2:
+                if (idx - center) ** 2 + (idy - center) ** 2 > radius**2:
                     X_inside[idx, idy] = np.nan
 
         X[
